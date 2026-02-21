@@ -25,23 +25,29 @@ public class AccountService {
 
     @Transactional
     public void transference(Long accountId1, Long accountId2, double cant) throws EntityNotFoundException, BusinessLogicException{
-        // verificacion existencia cuentas
         Optional<AccountEntity> account1 = accountRepository.findById(accountId1);
         Optional<AccountEntity> account2 = accountRepository.findById(accountId2);
-
+            // verfica existencia e las 2 cuentas
             if(account1.isEmpty() || account2.isEmpty()){
                 throw new  EntityNotFoundException("Una de las cuentas no existe");
             }
-            
+            // verifica que las 2 cuentas sean diferentes
             if (account1.equals(account2)){
                 throw new BusinessLogicException("La cuenta destino y fuente son la misma");
             }
-
-            if (account1.get().getSaldo()>0)
+            // verifica que el saldo enviado no sea mayor al saldo de la cuenta saliente
+            if (account1.get().getSaldo() < cant)
             {
-                throw new BusinessLogicException("La cuenta destino y fuente son la misma");
+                throw new BusinessLogicException("La cuenta tiene un saldo insuficioente");
             
             }
+            // Actualiza la informacion en cada entidad
+            account1.get().setSaldo(account1.get().getSaldo()-cant);
+            account2.get().setSaldo(account2.get().getSaldo()+cant);
+
+            
+
+
 
             
 
