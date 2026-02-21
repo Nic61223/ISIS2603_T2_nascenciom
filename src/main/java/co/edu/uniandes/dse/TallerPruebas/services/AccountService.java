@@ -44,17 +44,7 @@ public class AccountService {
             // Actualiza la informacion en cada entidad
             account1.get().setSaldo(account1.get().getSaldo()-cant);
             account2.get().setSaldo(account2.get().getSaldo()+cant);
-
-            
-
-
-
-            
-
-
-
-
-
-
+            accountRepository.save(account1.get());
+            accountRepository.save(account2.get());
     }
 }
