@@ -60,23 +60,23 @@ public class PocketServiceTest {
     /**
      * Inserta datos iniciales para el correcto funcionamiento de las pruebas.
      */
-    private void insertData() {
-        for (int i = 0; i < 3; i++) {
-            AccountEntity accountEntity = factory.manufacturePojo(AccountEntity.class);
-            accountEntity.setEstado("ACTIVA");
-            entityManager.persist(accountEntity);
-            accountList.add(accountEntity);
-        }
+        private void insertData() {
+            for (int i = 0; i < 3; i++) {
+                AccountEntity accountEntity = factory.manufacturePojo(AccountEntity.class);
+                accountEntity.setEstado("ACTIVA");
+                entityManager.persist(accountEntity);
+                accountList.add(accountEntity);
+            }
 
-        for (int i = 0; i < 3; i++) {
-            PocketEntity pocketEntity = factory.manufacturePojo(PocketEntity.class);
-            pocketEntity.setAccount(accountList.get(0));
-            entityManager.persist(pocketEntity);
-            pocketList.add(pocketEntity);
+            for (int i = 0; i < 3; i++) {
+                PocketEntity pocketEntity = factory.manufacturePojo(PocketEntity.class);
+                pocketEntity.setAccount(accountList.get(0));
+                entityManager.persist(pocketEntity);
+                pocketList.add(pocketEntity);
+            }
+            // Actualizar la lista de bolsillos en la cuenta para las validaciones
+            accountList.get(0).setPockets(pocketList);
         }
-        // Actualizar la lista de bolsillos en la cuenta para las validaciones
-        accountList.get(0).setPockets(pocketList);
-    }
 
     /**
      * Prueba para crear un Pocket.

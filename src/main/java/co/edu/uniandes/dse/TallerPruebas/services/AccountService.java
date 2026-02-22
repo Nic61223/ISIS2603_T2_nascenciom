@@ -22,7 +22,7 @@ public class AccountService {
     private AccountRepository accountRepository;
     @Autowired
     private PocketRepository pocketRepository;
-
+//regla 2
     @Transactional
     public void transference(Long accountId1, Long accountId2, double cant) throws EntityNotFoundException, BusinessLogicException{
         Optional<AccountEntity> account1 = accountRepository.findById(accountId1);
@@ -47,4 +47,33 @@ public class AccountService {
             accountRepository.save(account1.get());
             accountRepository.save(account2.get());
     }
+
+// regla 1
+    public void transferenciaABolsillo(Long accountId, double cantidad, Long bolsilloId ) throws EntityNotFoundException, BusinessLogicException{
+        Optional<AccountEntity> cuenta = accountRepository.findById(accountId);
+        Optional<PocketEntity> bolsillo = pocketRepository.findById(bolsilloId);
+
+        if (cuenta.isEmpty()) {
+            throw new EntityNotFoundException("No existe una cuenta con este Id");
+        }
+        if (bolsillo.isEmpty()) {
+            throw new EntityNotFoundException("No se encontro ningun bolsillo con este Id");
+        }
+        if (cuenta.get().getSaldo() < cantidad) {
+            throw new BusinessLogicException("El saldo no es suficioente");
+        }
+
+        cuenta.get().setSaldo(cuenta.get().getSaldo()- cantidad);
+        bolsillo.get().setSaldo(bolsillo.get().getSaldo()+cantidad);
+
+        accountRepository.save(cuenta.get());
+        pocketRepository.save(bolsillo.get());
+
+
+    }
+
+
+
+
+
 }
